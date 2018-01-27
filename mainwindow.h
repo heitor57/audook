@@ -22,6 +22,8 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void set_progress(int x);
+
 private:
     Ui::MainWindow *ui;
 };

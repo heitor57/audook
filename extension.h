@@ -4,6 +4,7 @@
 #include <string>
 using namespace std;
 #include <QString>
+
 //
 inline int ext_size(const string &str){
     unsigned int i=0,count=0;

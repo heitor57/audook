@@ -1,21 +1,24 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "extension.h"
+#include "TextExtractor.h"
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QTextStream>
 #include <fstream>
 #include <string>
-#include "extension.h"
 #include <iostream>
 #include <QFileInfo>
-#include "TextExtractor.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <cstdio>
+#include <QScrollBar>
+#include <QTextCursor>
 #ifdef _HAVE_CONFIG
 #include <config.h>
 #endif // _HAVE_CONFIG
 
+extern string txt_content;
 // txt extractor
 int txt_extract( const char* argv ){
 
@@ -35,6 +38,8 @@ bool fileExists(QString path) {
     QFileInfo check_file(path);
     return check_file.exists();
 }
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -42,8 +47,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->pushButton->setText("Arquivo");
     ui->pushButton_2->setCheckable(true);
-
+    ui->plainTextEdit->setReadOnly(false);
+    //connect(ui->plainTextEdit->verticalScrollBar(), SIGNAL(valueChanged(int)),
+               // ui->progressBar, SLOT(set_progress(int)));
 }
+
 
 MainWindow::~MainWindow()
 {
@@ -52,6 +60,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
+    ui->plainTextEdit->document()->setPlainText("");
     QString path = QFileDialog::getOpenFileName(this,tr("Open File"),"/home",tr("(*.txt *.pdf)"));
     QFile file(path);
     if(!file.open(QIODevice::ReadOnly)){
@@ -59,40 +68,26 @@ void MainWindow::on_pushButton_clicked()
     }
 
     if(ext_name(path.toStdString().c_str()) == "pdf"){
-        if(fileExists(ext_switch(path,"txt"))){
-            QMessageBox::StandardButton reply;
-            reply = QMessageBox::question(this, "Question", "A file with this name: ("+ext_switch(path,"txt")+") already exists, do you want to overwrite?(Is needed)",
-            QMessageBox::Yes|QMessageBox::No);
-            if (reply == QMessageBox::No) {
-                return;
-            }else{
-                ofstream ftemp;
-                ftemp.open((ext_switch(path,"txt")).toStdString());
-                ftemp<< "";
-                ftemp.close();
-            }
-        }
         txt_extract(path.toStdString().c_str());
-        QFile file2in(QString::fromStdString(ext_switch(path.toStdString(),"txt")));
-        if(!file2in.open(QIODevice::ReadOnly)){
-            QMessageBox::information(nullptr,"info",file.errorString());
-        }
-        QTextStream in(&file2in);
-        ui->textBrowser->setText(in.readAll());
+        ui->plainTextEdit->document()->setPlainText(QString::fromStdString(txt_content));
+        txt_content.clear();
     }else{
         QTextStream in(&file);
-        ui->textBrowser->setText(in.readAll());
+        ui->plainTextEdit->document()->setPlainText(in.readAll());
     }
-
 
 
 
 }
 
 
-
 void MainWindow::on_pushButton_2_clicked()
 {
+    QTextCursor txt_cursor = ui->plainTextEdit->textCursor();
+    cerr << txt_cursor.position();
+    ui->plainTextEdit->setFocus();
+    txt_cursor.setPosition(txt_cursor.position()+1 ,QTextCursor::KeepAnchor);
+    ui->plainTextEdit->setTextCursor(txt_cursor);
 
 }
 

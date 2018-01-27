@@ -22,10 +22,11 @@
 #include "extension.h"
 #include <stack>
 #include <fstream>
+#include <string>
 using namespace std;
 
 
-
+string txt_content;
 TextExtractor::TextExtractor()
 {
 
@@ -217,8 +218,9 @@ void TextExtractor::AddTextElement( double dCurPosX, double dCurPosY,
         ++pszData;
     }
     ofstream file;
-    file.open(ext_switch((string)file_name,"txt"), std::ofstream::app);
-    file << unicode.GetStringUtf8().c_str();
-    file.close();
+    txt_content += unicode.GetStringUtf8().c_str();
+    //file.open(ext_switch((string)file_name,"txt"), std::ofstream::app);
+    //file << unicode.GetStringUtf8().c_str()+'\n';
+    //file.close();
     //printf("%s",unicode.GetStringUtf8().c_str() );
 }

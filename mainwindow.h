@@ -2,8 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
 namespace Ui {
+
 class MainWindow;
 }
 
@@ -21,8 +21,7 @@ private slots:
     void on_pushButton_2_toggled(bool checked);
 
     void on_pushButton_2_clicked();
-
-    void set_progress(int x);
+    void run();
 
 private:
     Ui::MainWindow *ui;

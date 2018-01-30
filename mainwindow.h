@@ -24,8 +24,10 @@ private slots:
     void on_pushButton_2_clicked();
     void run();
     int sync_progress_bar(QTextCursor txt_cursor);
+    double get_progress_double(QTextCursor txt_cursor);
 signals:
     void text_progress_changed(int progress);
+
 private:
     Ui::MainWindow *ui;
 };

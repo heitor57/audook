@@ -14,7 +14,7 @@
 #include <cstdio>
 #include <QScrollBar>
 #include <QTextCursor>
-
+#include "json_control.h"
 #include <future>
 #include <thread>
 #ifdef _HAVE_CONFIG
@@ -24,6 +24,14 @@
 
 
 extern string txt_content;
+QString fpath;
+
+int MainWindow::sync_progress_bar(QTextCursor txt_cursor){
+    return 100*(float)txt_cursor.position()/ui->plainTextEdit->toPlainText().size();
+}
+double MainWindow::get_progress_double(QTextCursor txt_cursor){
+    return 100*(float)txt_cursor.position()/ui->plainTextEdit->toPlainText().size();
+}
 // txt extractor
 int txt_extract( const char* argv ){
 
@@ -60,25 +68,41 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    if(!fpath.isEmpty()){
+        edit_save(fpath,get_progress_double(ui->plainTextEdit->textCursor()));
+    }
     delete ui;
 }
 
 void MainWindow::on_pushButton_clicked()
 {
+    if(!fpath.isEmpty()){
+        edit_save(fpath,get_progress_double(ui->plainTextEdit->textCursor()));
+    }
     ui->plainTextEdit->document()->setPlainText("");
-    QString path = QFileDialog::getOpenFileName(this,tr("Open File"),"/home",tr("(*.txt *.pdf)"));
-    QFile file(path);
+    fpath = QFileDialog::getOpenFileName(this,tr("Open File"),"/home",tr("(*.txt *.pdf)"));
+    QFile file(fpath);
     if(!file.open(QIODevice::ReadOnly)){
         QMessageBox::information(nullptr,"info",file.errorString());
     }
 
-    if(ext_name(path.toStdString().c_str()) == "pdf"){
-        txt_extract(path.toStdString().c_str());
+    if(ext_name(fpath.toStdString().c_str()) == "pdf"){
+        txt_extract(fpath.toStdString().c_str());
         ui->plainTextEdit->document()->setPlainText(QString::fromStdString(txt_content));
         txt_content.clear();
     }else{
         QTextStream in(&file);
         ui->plainTextEdit->document()->setPlainText(in.readAll());
+    }
+
+    if(exist_save(fpath)){
+        QTextCursor txt_cursor = ui->plainTextEdit->textCursor();
+        emit text_progress_changed(get_progress(fpath));
+        txt_cursor.setPosition((get_progress(fpath)/100)*ui->plainTextEdit->toPlainText().size(),QTextCursor::MoveAnchor);
+        ui->plainTextEdit->setFocus();
+        ui->plainTextEdit->setTextCursor(txt_cursor);
+    }else{
+        add_new_save(fpath,0);
     }
 }
 
@@ -114,11 +138,7 @@ void speak(const char spoken_text[]){
 }
 
 // SPEAK
-int MainWindow::sync_progress_bar(QTextCursor txt_cursor){
 
-
-    return 100*(float)txt_cursor.position()/ui->plainTextEdit->toPlainText().size();
-}
 void MainWindow::run(){
     QTextCursor txt_cursor = ui->plainTextEdit->textCursor();
     if(ui->pushButton_2->isChecked()){

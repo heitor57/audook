@@ -32,7 +32,8 @@ SOURCES += \
 HEADERS += \
     TextExtractor.h \
     mainwindow.h \
-    extension.h
+    extension.h \
+    json_control.h
 
 FORMS += \
     mainwindow.ui

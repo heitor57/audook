@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTextCursor>
 namespace Ui {
 
 class MainWindow;
@@ -22,7 +23,9 @@ private slots:
 
     void on_pushButton_2_clicked();
     void run();
-
+    int sync_progress_bar(QTextCursor txt_cursor);
+signals:
+    void text_progress_changed(int progress);
 private:
     Ui::MainWindow *ui;
 };

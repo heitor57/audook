@@ -53,8 +53,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->pushButton->setText("Arquivo");
     ui->pushButton_2->setCheckable(true);
     ui->plainTextEdit->setReadOnly(false);
-    //connect(ui->plainTextEdit->verticalScrollBar(), SIGNAL(valueChanged(int)),
-               // ui->progressBar, SLOT(set_progress(int)));
+    connect(this, SIGNAL(text_progress_changed(int)),
+               ui->progressBar, SLOT(setValue(int)));
 }
 
 
@@ -114,17 +114,25 @@ void speak(const char spoken_text[]){
 }
 
 // SPEAK
+int MainWindow::sync_progress_bar(QTextCursor txt_cursor){
+
+
+    return 100*(float)txt_cursor.position()/ui->plainTextEdit->toPlainText().size();
+}
 void MainWindow::run(){
     QTextCursor txt_cursor = ui->plainTextEdit->textCursor();
     if(ui->pushButton_2->isChecked()){
         txt_cursor.select(QTextCursor::WordUnderCursor);
         ui->plainTextEdit->setFocus();
         ui->plainTextEdit->setTextCursor(txt_cursor);
+        emit text_progress_changed(sync_progress_bar(txt_cursor));
         speak(txt_cursor.selectedText().toStdString().c_str());
+
         while(txt_cursor.movePosition(QTextCursor::NextWord,QTextCursor::MoveAnchor,1) && ui->pushButton_2->isChecked()){
             txt_cursor.select(QTextCursor::WordUnderCursor);
             ui->plainTextEdit->setFocus();
             ui->plainTextEdit->setTextCursor(txt_cursor);
+            emit text_progress_changed(sync_progress_bar(txt_cursor));
             speak(txt_cursor.selectedText().toStdString().c_str());
         }
     }

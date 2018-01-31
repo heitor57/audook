@@ -27,15 +27,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     TextExtractor.cpp \
     mainwindow.cpp \
-    main.cpp
+    main.cpp \
+    about_window.cpp \
+    credits_window.cpp
 
 HEADERS += \
     TextExtractor.h \
     mainwindow.h \
     extension.h \
-    json_control.h
+    json_control.h \
+    about_window.h \
+    credits_window.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    about_window.ui \
+    credits_window.ui
 
 DISTFILES +=
+
+RESOURCES += \
+    resources.qrc

@@ -25,6 +25,10 @@ private slots:
     void run();
     int sync_progress_bar(QTextCursor txt_cursor);
     double get_progress_double(QTextCursor txt_cursor);
+    void on_actionAbout_triggered();
+
+    void on_actionCredits_triggered();
+
 signals:
     void text_progress_changed(int progress);
 

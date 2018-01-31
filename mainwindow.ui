@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Audook</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/images/images/audooklogo.png</normaloff>:/images/images/audooklogo.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <property name="enabled">
     <bool>true</bool>
@@ -91,14 +95,28 @@
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
-     <string>About</string>
+     <string>More</string>
     </property>
+    <addaction name="actionAbout"/>
+    <addaction name="actionCredits"/>
    </widget>
    <addaction name="menuOptions"/>
    <addaction name="menuAbout"/>
   </widget>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionCredits">
+   <property name="text">
+    <string>Credits</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

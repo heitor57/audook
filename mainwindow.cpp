@@ -17,14 +17,35 @@
 #include "json_control.h"
 #include <future>
 #include <thread>
+#include "about_window.h"
+#include "credits_window.h"
 #ifdef _HAVE_CONFIG
 #include <config.h>
 #endif // _HAVE_CONFIG
 
-
-
 extern string txt_content;
 QString fpath;
+
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+    ui->pushButton->setText("Arquivo");
+    ui->pushButton_2->setCheckable(true);
+    ui->plainTextEdit->setReadOnly(false);
+    connect(this, SIGNAL(text_progress_changed(int)),
+               ui->progressBar, SLOT(setValue(int)));
+}
+
+
+MainWindow::~MainWindow()
+{
+    if(!fpath.isEmpty()){
+        edit_save(fpath,get_progress_double(ui->plainTextEdit->textCursor()));
+    }
+    delete ui;
+}
 
 int MainWindow::sync_progress_bar(QTextCursor txt_cursor){
     return 100*(float)txt_cursor.position()/ui->plainTextEdit->toPlainText().size();
@@ -52,28 +73,6 @@ bool fileExists(QString path) {
     return check_file.exists();
 }
 
-
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
-    ui->pushButton->setText("Arquivo");
-    ui->pushButton_2->setCheckable(true);
-    ui->plainTextEdit->setReadOnly(false);
-    connect(this, SIGNAL(text_progress_changed(int)),
-               ui->progressBar, SLOT(setValue(int)));
-}
-
-
-MainWindow::~MainWindow()
-{
-    if(!fpath.isEmpty()){
-        edit_save(fpath,get_progress_double(ui->plainTextEdit->textCursor()));
-    }
-    delete ui;
-}
-
 void MainWindow::on_pushButton_clicked()
 {
     if(!fpath.isEmpty()){
@@ -84,8 +83,8 @@ void MainWindow::on_pushButton_clicked()
     QFile file(fpath);
     if(!file.open(QIODevice::ReadOnly)){
         QMessageBox::information(nullptr,"info",file.errorString());
+        return;
     }
-
     if(ext_name(fpath.toStdString().c_str()) == "pdf"){
         txt_extract(fpath.toStdString().c_str());
         ui->plainTextEdit->document()->setPlainText(QString::fromStdString(txt_content));
@@ -170,3 +169,17 @@ void MainWindow::on_pushButton_2_toggled(bool checked)
 
 }
 
+void MainWindow::on_actionAbout_triggered()
+{
+    about_window* w=  new about_window(this);
+    w->setModal(true);
+    w->show();
+
+}
+
+void MainWindow::on_actionCredits_triggered()
+{
+    credits_window* w=  new credits_window(this);
+    w->setModal(true);
+    w->show();
+}

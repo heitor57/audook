@@ -31,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->pushButton->setText("Arquivo");
     ui->pushButton_2->setCheckable(true);
     ui->plainTextEdit->setReadOnly(false);
     connect(this, SIGNAL(text_progress_changed(int)),

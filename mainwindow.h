@@ -19,12 +19,14 @@ public:
 private slots:
     void on_pushButton_clicked();
 
-    void on_pushButton_2_toggled(bool checked);
-
     void on_pushButton_2_clicked();
+
     void run();
+
     int sync_progress_bar(QTextCursor txt_cursor);
+
     double get_progress_double(QTextCursor txt_cursor);
+
     void on_actionAbout_triggered();
 
     void on_actionCredits_triggered();

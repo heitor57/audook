@@ -65,8 +65,6 @@ void TextExtractor::ExtractText( PdfMemDocument* pDocument, PdfPage* pPage )
 
     PdfContentsTokenizer tokenizer( pPage );
 
-    double dCurPosX     = 0.0;
-    double dCurPosY     = 0.0;
     bool   bTextBlock   = false;
     PdfFont* pCurFont   = NULL;
 
@@ -82,9 +80,9 @@ void TextExtractor::ExtractText( PdfMemDocument* pDocument, PdfPage* pPage )
             {
                 if( stack.size() == 2 )
                 {
-                    dCurPosX = stack.top().GetReal();
+                    stack.top().GetReal();
                     stack.pop();
-                    dCurPosY = stack.top().GetReal();
+                    stack.top().GetReal();
                     stack.pop();
                 }
                 else
@@ -144,7 +142,7 @@ void TextExtractor::ExtractText( PdfMemDocument* pDocument, PdfPage* pPage )
                         continue;
                     }
 
-                    AddTextElement( dCurPosX, dCurPosY, pCurFont, stack.top().GetString() );
+                    AddTextElement(pCurFont, stack.top().GetString() );
                     stack.pop();
                 }
                 else if( strcmp( pszToken, "\"" ) == 0 )
@@ -159,7 +157,7 @@ void TextExtractor::ExtractText( PdfMemDocument* pDocument, PdfPage* pPage )
                         continue;
                     }
 
-                    AddTextElement( dCurPosX, dCurPosY, pCurFont, stack.top().GetString() );
+                    AddTextElement(pCurFont, stack.top().GetString() );
                     stack.pop();
                     stack.pop(); // remove char spacing from stack
                     stack.pop(); // remove word spacing from stack
@@ -178,7 +176,7 @@ void TextExtractor::ExtractText( PdfMemDocument* pDocument, PdfPage* pPage )
                     for( int i=0; i<static_cast<int>(array.GetSize()); i++ ) 
                     {
                         if( array[i].IsString() || array[i].IsHexString() )
-                            AddTextElement( dCurPosX, dCurPosY, pCurFont, array[i].GetString() );
+                            AddTextElement(pCurFont, array[i].GetString() );
                     }
                 }
             }
@@ -195,8 +193,7 @@ void TextExtractor::ExtractText( PdfMemDocument* pDocument, PdfPage* pPage )
     }
 }
 
-void TextExtractor::AddTextElement( double dCurPosX, double dCurPosY, 
-		PdfFont* pCurFont, const PdfString & rString )
+void TextExtractor::AddTextElement(PdfFont* pCurFont, const PdfString & rString )
 {
     if( !pCurFont ) 
     {

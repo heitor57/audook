@@ -18,7 +18,7 @@ inline int ext_size(const string &str){
     return count;
 }
 inline int ext_size(const QString &str){
-    unsigned int i=0,count=0;
+    int i=0,count=0;
     for(; i<str.length() ; i++){
         if(str.at(i)=='.'){
             i++;

@@ -58,8 +58,7 @@ class TextExtractor {
      *  \param pCurFont font of the text
      *  \param rString the actual string
      */
-    void AddTextElement( double dCurPosX, double dCurPosY, 
-                         PdfFont* pCurFont, const PdfString & rString );
+    void AddTextElement(PdfFont* pCurFont, const PdfString & rString );
 };
 
 #endif // _TEXT_EXTRACTOR_H_

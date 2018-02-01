@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2018-01-21T19:18:48
+# Project created by QtCreator 2018-02-01T15:51:23
 #
 #-------------------------------------------------
 
@@ -8,10 +8,11 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = speechgui
+TARGET = audook
 TEMPLATE = app
-LIBS += -lpodofo
-LIBS += -lespeak
+LIBS+=-lpodofo
+LIBS+=-lespeak
+
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -28,23 +29,22 @@ SOURCES += \
     TextExtractor.cpp \
     mainwindow.cpp \
     main.cpp \
-    about_window.cpp \
-    credits_window.cpp
+    credits_window.cpp \
+    about_window.cpp
 
 HEADERS += \
     TextExtractor.h \
     mainwindow.h \
-    extension.h \
     json_control.h \
-    about_window.h \
-    credits_window.h
+    extension.h \
+    credits_window.h \
+    about_window.h
+
+RESOURCES += \
+    resources.qrc \
+    images.qrc
 
 FORMS += \
     mainwindow.ui \
-    about_window.ui \
-    credits_window.ui
-
-DISTFILES +=
-
-RESOURCES += \
-    resources.qrc
+    credits_window.ui \
+    about_window.ui

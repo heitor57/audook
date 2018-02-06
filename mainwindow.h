@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QTextCursor>
+
+
 namespace Ui {
 
 class MainWindow;
@@ -30,6 +32,8 @@ private slots:
     void on_actionAbout_triggered();
 
     void on_actionCredits_triggered();
+
+    void on_actionOptions_triggered();
 
 signals:
     void text_progress_changed(int progress);

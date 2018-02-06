@@ -30,7 +30,8 @@ SOURCES += \
     mainwindow.cpp \
     main.cpp \
     credits_window.cpp \
-    about_window.cpp
+    about_window.cpp \
+    options_window.cpp
 
 HEADERS += \
     TextExtractor.h \
@@ -38,7 +39,8 @@ HEADERS += \
     json_control.h \
     extension.h \
     credits_window.h \
-    about_window.h
+    about_window.h \
+    options_window.h
 
 RESOURCES += \
     resources.qrc \
@@ -47,4 +49,5 @@ RESOURCES += \
 FORMS += \
     mainwindow.ui \
     credits_window.ui \
-    about_window.ui
+    about_window.ui \
+    options_window.ui

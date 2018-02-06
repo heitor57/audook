@@ -19,6 +19,7 @@
 #include <thread>
 #include "about_window.h"
 #include "credits_window.h"
+#include "options_window.h"
 #ifdef _HAVE_CONFIG
 #include <config.h>
 #endif // _HAVE_CONFIG
@@ -116,11 +117,10 @@ void* user_data;
 t_espeak_callback *SynthCallback;
 espeak_PARAMETER Parm;
 unsigned int Size,position=0, end_position=0, flags=espeakCHARS_AUTO, *unique_identifier;
-
+ char *langNativeString = "en-us";
 void speak(const char spoken_text[]){
     output = AUDIO_OUTPUT_PLAYBACK;
     espeak_Initialize(output, Buflength, path, Options );
-    const char *langNativeString = "pt";
     espeak_VOICE voice;
     memset(&voice, 0, sizeof(espeak_VOICE)); // Zero out the voice first
     voice.languages = langNativeString;
@@ -173,6 +173,13 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::on_actionCredits_triggered()
 {
     credits_window* w=  new credits_window(this);
+    w->setModal(true);
+    w->show();
+}
+
+void MainWindow::on_actionOptions_triggered()
+{
+    options_window* w=  new options_window(this);
     w->setModal(true);
     w->show();
 }

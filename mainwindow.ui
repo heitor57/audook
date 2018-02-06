@@ -90,8 +90,9 @@
    </property>
    <widget class="QMenu" name="menuOptions">
     <property name="title">
-     <string>Options</string>
+     <string>Edit</string>
     </property>
+    <addaction name="actionOptions"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -111,6 +112,11 @@
   <action name="actionCredits">
    <property name="text">
     <string>Credits</string>
+   </property>
+  </action>
+  <action name="actionOptions">
+   <property name="text">
+    <string>Options</string>
    </property>
   </action>
  </widget>
